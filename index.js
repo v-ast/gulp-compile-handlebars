@@ -16,7 +16,7 @@ module.exports = function (data, options) {
 		}
 
 		try {
-			template = Handlebars.compile(file.contents.toString();
+			var template = Handlebars.compile(file.contents.toString());
 			file.contents = new Buffer(template(data));
 		} catch (err) {
 			this.emit('error', new gutil.PluginError('gulp-template-handlebars', err));
