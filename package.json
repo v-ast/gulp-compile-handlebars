@@ -1,6 +1,6 @@
 {
   "name": "gulp-template-handlebars",
-  "version": "0.1.1",
+  "version": "0.1",
   "description": "Compile Handlebars templates to file - gulp plugin",
   "license": "MIT",
   "repository": "kaanon/gulp-template-handlebars",
@@ -19,7 +19,8 @@
     "index.js"
   ],
   "keywords": [
-    "gulpplugin",
+    "gulp",
+    "gulp-plugin"
     "template",
     "compile",
     "html",
