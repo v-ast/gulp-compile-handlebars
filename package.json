@@ -1,13 +1,13 @@
 {
-  "name": "gulp-template",
+  "name": "gulp-template-handlebars",
   "version": "0.1.1",
-  "description": "Compile Lodash templates. Underscore too.",
+  "description": "Compile Handlebars templates to file - gulp plugin",
   "license": "MIT",
-  "repository": "sindresorhus/gulp-template",
+  "repository": "kaanon/gulp-template-handlebars",
   "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "http://sindresorhus.com"
+    "name": "Kaanon MacFarlane",
+    "email": "kaanonm@gmail.com",
+    "url": "http://kaanon.com"
   },
   "engines": {
     "node": ">=0.10.0"
@@ -20,17 +20,16 @@
   ],
   "keywords": [
     "gulpplugin",
-    "lodash",
-    "underscore",
     "template",
     "compile",
     "html",
-    "rendering"
+    "rendering",
+    "handlebars"
   ],
   "dependencies": {
     "gulp-util": "~2.2.10",
     "through2": "~0.4.0",
-    "lodash": "~2.4.1"
+    "handlebars": "~2.0"
   },
   "devDependencies": {
     "mocha": "*"

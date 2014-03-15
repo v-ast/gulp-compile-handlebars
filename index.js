@@ -1,7 +1,7 @@
 'use strict';
 var gutil = require('gulp-util');
 var through = require('through2');
-var template = require('lodash').template;
+var Handlebars = require('handlebars');
 
 module.exports = function (data, options) {
 	return through.obj(function (file, enc, cb) {
@@ -11,14 +11,15 @@ module.exports = function (data, options) {
 		}
 
 		if (file.isStream()) {
-			this.emit('error', new gutil.PluginError('gulp-template', 'Streaming not supported'));
+			this.emit('error', new gutil.PluginError('gulp-template-handlebars', 'Streaming not supported'));
 			return cb();
 		}
 
 		try {
-			file.contents = new Buffer(template(file.contents.toString(), data, options));
+			template = Handlebars.compile(file.contents.toString();
+			file.contents = new Buffer(template(data));
 		} catch (err) {
-			this.emit('error', new gutil.PluginError('gulp-template', err));
+			this.emit('error', new gutil.PluginError('gulp-template-handlebars', err));
 		}
 
 		this.push(file);
