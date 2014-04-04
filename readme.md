@@ -30,7 +30,7 @@ var handlebars = require('gulp-compile-handlebars');
 gulp.task('default', function () {
 	gulp.src('src/hello.handlebars')
 		.pipe(handlebars({
-			name: 'Kaanon'
+			firstName: 'Kaanon'
 		}))
 		.pipe(rename('hello.html'))
 		.pipe(gulp.dest('dist'));
