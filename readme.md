@@ -19,6 +19,8 @@ npm install --save-dev gulp-compile-handlebars
 
 ```erb
 <h1>Hello {{firstName}}</h1>
+<h2>HELLO! {{capitals firstName}}</h2>
+{{> footer}}
 ```
 
 ### `gulpfile.js`
@@ -28,10 +30,22 @@ var gulp = require('gulp');
 var handlebars = require('gulp-compile-handlebars');
 
 gulp.task('default', function () {
-	gulp.src('src/hello.handlebars')
-		.pipe(handlebars({
-			firstName: 'Kaanon'
-		}))
+	var templateData = {
+		firstName: 'Kaanon'
+	},
+	options = {
+		partials : {
+			footer : '<footer>the end</footer>'
+		},
+		helpers : {
+			capitals : function(str){
+				return str.toUpperCase();	
+			}
+		}
+	}
+
+	return gulp.src('src/hello.handlebars')
+		.pipe(handlebars(templateData, options))
 		.pipe(rename('hello.html'))
 		.pipe(gulp.dest('dist'));
 });
@@ -41,6 +55,8 @@ gulp.task('default', function () {
 
 ```html
 <h1>Hello Kaanon</h1>
+<h2>HELLO! KAANON</h2>
+<footer>the end</footer>
 ```
 
 ## License
