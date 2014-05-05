@@ -18,6 +18,17 @@ module.exports = function (data, opts) {
 			Handlebars.registerHelper(h, options.helpers[h]);
 		}
 	}
+	// Go through a partials directory array
+	if(options.batch){
+		// Allow single string
+		if(typeof options.batch === 'string') {
+			Handlebars.registerPartials(options.batch);
+		} else {
+			for(var i = 0, l = options.batch.length, b = options.batch[i]; i < l; i++) {
+				Handlebars.registerPartials(b);
+			}
+		}
+	}
 
 
 	return through.obj(function (file, enc, cb) {
