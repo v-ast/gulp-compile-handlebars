@@ -50,7 +50,7 @@ module.exports = function (data, opts) {
 			while((match = regex.exec(content)) !== null){
 				partial = match[1];
 				//Only register an empty partial if the partial has not already been registered
-				if(Handlebars.partials.hasOwnProperty(partial)){
+				if(!Handlebars.partials.hasOwnProperty(partial)){
 					Handlebars.registerPartial(partial, gutil.noop);	
 				}
 			}
