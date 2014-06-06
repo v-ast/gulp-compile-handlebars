@@ -19,6 +19,20 @@ module.exports = function (data, opts) {
 			Handlebars.registerHelper(h, options.helpers[h]);
 		}
 	}
+
+	var mockPartials = function(content){
+    		var regex = /{{> (.*)}}/gim,
+		    match,
+		    partial;
+		if(content.match(regex)){
+			while((match = regex.exec(content)) !== null){
+				partial = match[1];
+				Handlebars.registerPartial(partial, gutil.noop);	
+    			} 
+		}
+        };
+
+
 	// Go through a partials directory array
 	if(options.batch){
 		// Allow single string
@@ -50,6 +64,10 @@ module.exports = function (data, opts) {
 			return cb();
 		}
 
+		if(options.ignorePartials){
+			mockPartials(file.contents.toString());		
+		}
+	
 		try {
 			var template = Handlebars.compile(file.contents.toString());
 			file.contents = new Buffer(template(data));
