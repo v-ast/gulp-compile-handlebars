@@ -21,6 +21,7 @@ npm install --save-dev gulp-compile-handlebars
 <h1>Hello {{firstName}}</h1>
 <h2>HELLO! {{capitals firstName}}</h2>
 {{> footer}}
+{{> footer2}}
 ```
 
 ### `gulpfile.js`
@@ -34,6 +35,7 @@ gulp.task('default', function () {
 		firstName: 'Kaanon'
 	},
 	options = {
+		ignorePartials: true, //ignores the unknown footer2 partial in the handlebars template, defaults to false
 		partials : {
 			footer : '<footer>the end</footer>'
 		},
