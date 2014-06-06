@@ -1,4 +1,3 @@
-'use strict';
 var gutil = require('gulp-util');
 var through = require('through2');
 var Handlebars = require('handlebars');
@@ -20,18 +19,6 @@ module.exports = function (data, opts) {
 		}
 	}
 
-	var mockPartials = function(content){
-    		var regex = /{{> (.*)}}/gim,
-		    match,
-		    partial;
-		if(content.match(regex)){
-			while((match = regex.exec(content)) !== null){
-				partial = match[1];
-				Handlebars.registerPartial(partial, gutil.noop);	
-    			} 
-		}
-        };
-
 
 	// Go through a partials directory array
 	if(options.batch){
@@ -52,6 +39,24 @@ module.exports = function (data, opts) {
 		});
 	}
 
+	/**
+	 * For handling unknown partials
+	 * @method mockPartials
+	 * @param  {string}     content Contents of handlebars file
+	 */
+	var mockPartials = function(content){
+		var regex = /{{> (.*)}}/gim, match, partial;
+		if(content.match(regex)){
+			while((match = regex.exec(content)) !== null){
+				partial = match[1];
+				//Only register an empty partial if the partial has not already been registered
+				if(Handlebars.partials.hasOwnProperty(partial)){
+					Handlebars.registerPartial(partial, gutil.noop);	
+				}
+			}
+		}
+	};
+
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
@@ -64,12 +69,12 @@ module.exports = function (data, opts) {
 			return cb();
 		}
 
-		if(options.ignorePartials){
-			mockPartials(file.contents.toString());		
-		}
-	
 		try {
-			var template = Handlebars.compile(file.contents.toString());
+			var fileContents = file.contents.toString();
+			if(options.ignorePartials){
+				mockPartials(fileContents);		
+			}
+			var template = Handlebars.compile(fileContents);
 			file.contents = new Buffer(template(data));
 		} catch (err) {
 			this.emit('error', new gutil.PluginError('gulp-compile-handlebars', err));
