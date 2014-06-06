@@ -1,4 +1,4 @@
-# [gulp](https://github.com/wearefractal/gulp)-compile-handlebars
+# gulp-compile-handlebars
 Forked from [gulp-template](https://github.com/sindresorhus/gulp-template)
 Inspired by [grunt-compile-handlebars](https://github.com/patrickkettner/grunt-compile-handlebars)
 
@@ -17,7 +17,7 @@ npm install --save-dev gulp-compile-handlebars
 
 ### `src/hello.handlebars`
 
-```erb
+```handlebars
 <h1>Hello {{firstName}}</h1>
 <h2>HELLO! {{capitals firstName}}</h2>
 {{> footer}}
@@ -61,6 +61,13 @@ gulp.task('default', function () {
 <footer>the end</footer>
 ```
 
+## Options
+
+- __ignorePartials__ : ignores any unknown partials. Useful if you only want to handle part of the file
+- __partials__ : Javascript object that will fill in partials using strings
+- __batch__ : Javascript array of filepaths to use as partials
+- __helpers__: javascript functions to stand in for helpers used in the handlebars files
+
 ## License
 
-MIT © [Kaanon MacFarlane](http://kaanon.com)
+[MIT](http://opensource.org/licenses/MIT) © [Kaanon MacFarlane](http://kaanon.com)
