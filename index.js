@@ -2,6 +2,7 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var Handlebars = require('handlebars');
 var fs = require('fs');
+var extend = require('util')._extend;
 
 module.exports = function (data, opts) {
 
@@ -74,9 +75,9 @@ module.exports = function (data, opts) {
 			if(options.ignorePartials){
 				mockPartials(fileContents);		
 			}
-			// Enable gulp-data usage, override default data with data from file.data
+			// Enable gulp-data usage, Extend default data with data from file.data
 			if(file.data){
-				data = file.data;
+				data = extend(data, file.data);
 			}
 			var template = Handlebars.compile(fileContents);
 			file.contents = new Buffer(template(data));
