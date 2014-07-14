@@ -25,7 +25,7 @@ module.exports = function (data, opts) {
 	if(options.batch){
 		// Allow single string
 		if(typeof options.batch === 'string') options.batch = [options.batch];
-			
+
 		options.batch.forEach(function (b) {
 			var filenames = fs.readdirSync(b);
 
@@ -52,7 +52,7 @@ module.exports = function (data, opts) {
 				partial = match[1];
 				//Only register an empty partial if the partial has not already been registered
 				if(!Handlebars.partials.hasOwnProperty(partial)){
-					Handlebars.registerPartial(partial, gutil.noop);	
+					Handlebars.registerPartial(partial, gutil.noop);
 				}
 			}
 		}
@@ -73,10 +73,12 @@ module.exports = function (data, opts) {
 		try {
 			var fileContents = file.contents.toString();
 			if(options.ignorePartials){
-				mockPartials(fileContents);		
+				mockPartials(fileContents);
 			}
+
 			// Enable gulp-data usage, Extend default data with data from file.data
 			if(file.data){
+				if(!data) data = {};
 				data = extend(data, file.data);
 			}
 			var template = Handlebars.compile(fileContents);
