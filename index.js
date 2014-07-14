@@ -74,6 +74,10 @@ module.exports = function (data, opts) {
 			if(options.ignorePartials){
 				mockPartials(fileContents);		
 			}
+			// Enable gulp-data usage, override default data with data from file.data
+			if(file.data){
+				data = file.data;
+			}
 			var template = Handlebars.compile(fileContents);
 			file.contents = new Buffer(template(data));
 		} catch (err) {
