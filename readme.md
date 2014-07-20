@@ -29,6 +29,7 @@ npm install --save-dev gulp-compile-handlebars
 ```js
 var gulp = require('gulp');
 var handlebars = require('gulp-compile-handlebars');
+var rename = require('gulp-rename');
 
 gulp.task('default', function () {
 	var templateData = {
