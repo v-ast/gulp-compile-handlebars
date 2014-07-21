@@ -22,7 +22,7 @@ module.exports = function (data, opts) {
 	// Do not search for more than 10 nestings
 	var maxDepth = 10;
 	// Process only files with given extension names
-	var allowedExtensions = ['hb', 'hbs', 'handlebars']
+	var allowedExtensions = ['hb', 'hbs', 'handlebars', 'html'];
 
 	/**
 	 * Searching partials recursively
