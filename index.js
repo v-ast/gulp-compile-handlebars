@@ -88,6 +88,8 @@ module.exports = function (data, opts) {
 
 
 	return through.obj(function (file, enc, cb) {
+		var _data = extend({}, data);
+
 		if (file.isNull()) {
 			this.push(file);
 			return cb();
@@ -106,11 +108,10 @@ module.exports = function (data, opts) {
 
 			// Enable gulp-data usage, Extend default data with data from file.data
 			if(file.data){
-				if(!data) data = {};
-				data = extend(data, file.data);
+				_data = extend(_data, file.data);
 			}
 			var template = Handlebars.compile(fileContents);
-			file.contents = new Buffer(template(data));
+			file.contents = new Buffer(template(_data));
 		} catch (err) {
 			this.emit('error', new gutil.PluginError('gulp-compile-handlebars', err));
 		}

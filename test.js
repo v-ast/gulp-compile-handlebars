@@ -85,7 +85,7 @@ it('should use file.data if available', function (cb) {
 
 });
 
-it('should use not require a default data object', function (cb) {
+it('should not require a default data object', function (cb) {
 	var stream = template();
 
 	stream.on('data', function (data) {
