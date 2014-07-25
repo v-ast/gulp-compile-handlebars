@@ -52,7 +52,7 @@ module.exports = function (data, opts) {
 				partial = match[1];
 				//Only register an empty partial if the partial has not already been registered
 				if(!Handlebars.partials.hasOwnProperty(partial)){
-					Handlebars.registerPartial(partial, gutil.noop);
+					Handlebars.registerPartial(partial, '<!-- TODO: missing partial - ' + partial + ' -->');
 				}
 			}
 		}
