@@ -18,10 +18,16 @@ npm install --save-dev gulp-compile-handlebars
 ### `src/hello.handlebars`
 
 ```handlebars
-<h1>Hello {{firstName}}</h1>
-<h2>HELLO! {{capitals firstName}}</h2>
+{{> partials/header}}
+<p>Hello {{firstName}}</p>
+<p>HELLO! {{capitals firstName}}</p>
 {{> footer}}
-{{> footer2}}
+```
+
+### `src/partials/header.handlebars`
+
+```handlebars
+<h1>Header</h1>
 ```
 
 ### `gulpfile.js`
@@ -29,6 +35,7 @@ npm install --save-dev gulp-compile-handlebars
 ```js
 var gulp = require('gulp');
 var handlebars = require('gulp-compile-handlebars');
+var rename = require('gulp-rename');
 
 gulp.task('default', function () {
 	var templateData = {
@@ -39,9 +46,10 @@ gulp.task('default', function () {
 		partials : {
 			footer : '<footer>the end</footer>'
 		},
+		batch : ['./src/partials'],
 		helpers : {
 			capitals : function(str){
-				return str.toUpperCase();	
+				return str.toUpperCase();
 			}
 		}
 	}
@@ -56,8 +64,9 @@ gulp.task('default', function () {
 ### `dist/hello.html`
 
 ```html
-<h1>Hello Kaanon</h1>
-<h2>HELLO! KAANON</h2>
+<h1>Header</h1>
+<p>Hello Kaanon</p>
+<p>HELLO! KAANON</p>
 <footer>the end</footer>
 ```
 
