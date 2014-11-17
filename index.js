@@ -2,6 +2,7 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var Handlebars = require('handlebars');
 var fs = require('fs');
+var extend = require('util')._extend;
 
 module.exports = function (data, opts) {
 
@@ -90,6 +91,8 @@ module.exports = function (data, opts) {
 
 
 	return through.obj(function (file, enc, cb) {
+		var _data = extend({}, data);
+
 		if (file.isNull()) {
 			this.push(file);
 			return cb();
@@ -105,8 +108,13 @@ module.exports = function (data, opts) {
 			if(options.ignorePartials){
 				mockPartials(fileContents);
 			}
+
+			// Enable gulp-data usage, Extend default data with data from file.data
+			if(file.data){
+				_data = extend(_data, file.data);
+			}
 			var template = Handlebars.compile(fileContents);
-			file.contents = new Buffer(template(data));
+			file.contents = new Buffer(template(_data));
 		} catch (err) {
 			this.emit('error', new gutil.PluginError('gulp-compile-handlebars', err));
 		}

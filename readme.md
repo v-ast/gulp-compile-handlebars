@@ -77,6 +77,13 @@ gulp.task('default', function () {
 - __batch__ : Javascript array of filepaths to use as partials
 - __helpers__: javascript functions to stand in for helpers used in the handlebars files
 
+## Works with gulp-data
+
+Use gulp-data to pass a data object to the template based on the handlebars file being processed.
+If you pass in template data this will be extended with the object from gulp-data.
+
+See [gulp-data](https://www.npmjs.org/package/gulp-data) for usage examples.
+
 ## License
 
 [MIT](http://opensource.org/licenses/MIT) © [Kaanon MacFarlane](http://kaanon.com)
