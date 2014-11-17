@@ -2,6 +2,7 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var Handlebars = require('handlebars');
 var fs = require('fs');
+var extend = require('util')._extend;
 
 module.exports = function (data, opts) {
 
@@ -24,46 +25,49 @@ module.exports = function (data, opts) {
 	// Process only files with given extension names
 	var allowedExtensions = ['hb', 'hbs', 'handlebars', 'html'];
 
-	/**
-	 * Searching partials recursively
-	 * @method mocksearchDirForPartialsPartials
-	 * @param  {string}     dir directory
-	 * @param  {string}     registrationDir short directory for registering partial
-	 */
-	var searchDirForPartials = function(dir, registrationDir, depth) {
-		if (depth > maxDepth) {
-			return;
-		}
+	var isDir = function (filename) {
+		var stats = fs.statSync(filename);
+		return stats && stats.isDirectory();
+	};
 
-		var filenames = fs.readdirSync(dir);
+	var isHandlebars = function (filename) {
+		return allowedExtensions.indexOf(filename.split('.').pop()) !== -1;
+	};
 
-		filenames.forEach(function (filename) {
-			var stats = fs.statSync(dir + '/' + filename);
+	var partialName = function (filename, base) {
+		var name = filename.substr(0, filename.lastIndexOf('.'));
+		name = name.replace(new RegExp('^' + base + '\\/'), '');
+		return name;
+	};
 
-			// If directory, go recursive
-			if (stats && stats.isDirectory()) {
-				searchDirForPartials(dir + '/' + filename, registrationDir + '/' + filename, depth + 1);
+	var registerPartial = function (filename, base) {
+		if (!isHandlebars(filename)) { return; }
+		var name = partialName(filename, base);
+		console.log(name);
+		var template = fs.readFileSync(filename, 'utf8');
+		Handlebars.registerPartial(name, template);
+	};
+
+	var registerPartials = function (dir, base, depth) {
+		if (depth > maxDepth) { return; }
+		base = base || dir;
+		fs.readdirSync(dir).forEach(function (basename) {
+			var filename = dir + '/' + basename;
+			if (isDir(filename)) {
+				registerPartials(filename, base);
 			} else {
-				// register only files with hb, hbs or handlebars
-				if (allowedExtensions.indexOf(filename.split('.').pop()) !== -1) {
-					var name = filename.substr(0, filename.lastIndexOf('.'));
-
-					var template = fs.readFileSync(dir + '/' + filename, 'utf8');
-					Handlebars.registerPartial(registrationDir + '/' + name, template);
-					// console.log('Registered:', registrationDir + '/' + name)
-				}
+				registerPartial(filename, base);
 			}
 		});
-	}
-
+	};
 
 	// Go through a partials directory array
 	if(options.batch){
 		// Allow single string
 		if(typeof options.batch === 'string') options.batch = [options.batch];
 
-		options.batch.forEach(function (piece) {
-			searchDirForPartials(piece, piece.split('/').pop(), 0)
+		options.batch.forEach(function (dir) {
+			registerPartials(dir, dir, 0);
 		});
 	}
 
@@ -87,6 +91,8 @@ module.exports = function (data, opts) {
 
 
 	return through.obj(function (file, enc, cb) {
+		var _data = extend({}, data);
+
 		if (file.isNull()) {
 			this.push(file);
 			return cb();
@@ -102,8 +108,13 @@ module.exports = function (data, opts) {
 			if(options.ignorePartials){
 				mockPartials(fileContents);
 			}
+
+			// Enable gulp-data usage, Extend default data with data from file.data
+			if(file.data){
+				_data = extend(_data, file.data);
+			}
 			var template = Handlebars.compile(fileContents);
-			file.contents = new Buffer(template(data));
+			file.contents = new Buffer(template(_data));
 		} catch (err) {
 			this.emit('error', new gutil.PluginError('gulp-compile-handlebars', err));
 		}
