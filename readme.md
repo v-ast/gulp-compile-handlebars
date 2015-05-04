@@ -77,6 +77,15 @@ gulp.task('default', function () {
 - __batch__ : Javascript array of filepaths to use as partials
 - __helpers__: javascript functions to stand in for helpers used in the handlebars files
 
+## handlebars.Handlebars
+
+You can access the Handlebars library from the `handlebars.Handlebars` property.
+
+```js
+var handlebars = require('gulp-compile-handlebars');
+var safestring = new handlebars.Handlebars.SafeString('<strong>HELLO! KAANON</strong>');
+```
+
 ## Works with gulp-data
 
 Use gulp-data to pass a data object to the template based on the handlebars file being processed.
