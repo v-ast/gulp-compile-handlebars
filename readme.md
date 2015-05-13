@@ -18,7 +18,7 @@ npm install --save-dev gulp-compile-handlebars
 ### `src/hello.handlebars`
 
 ```handlebars
-{{> partials/header}}
+{{> header}}
 <p>Hello {{firstName}}</p>
 <p>HELLO! {{capitals firstName}}</p>
 {{> footer}}
