@@ -35,7 +35,7 @@ function handlebars(data, opts) {
 	};
 
 	var partialName = function (filename, base) {
-		var name = filename.substr(0, filename.lastIndexOf('.'));
+		var name = filename.substr(filename.charAt(0) === '_' ? 1 : 0, filename.lastIndexOf('.'));
 		name = name.replace(new RegExp('^' + base + '\\/'), '');
 		return name;
 	};
