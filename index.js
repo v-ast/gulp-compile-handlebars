@@ -4,7 +4,8 @@ var through = require('through2');
 var fs = require('fs');
 var extend = require('util')._extend;
 
-function handlebars(data, opts) {
+
+module.exports = function(data, opts) {
 
 
 	var options = opts || {},
@@ -127,5 +128,3 @@ function handlebars(data, opts) {
 		cb();
 	});
 }
-
-module.exports = handlebars;
