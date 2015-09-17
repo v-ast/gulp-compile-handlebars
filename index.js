@@ -72,6 +72,7 @@ module.exports = function(data, opts) {
 		if(typeof options.batch === 'string') options.batch = [options.batch];
 
 		options.batch.forEach(function (dir) {
+			dir = path.normalize(dir);
 			registerPartials(dir, dir, 0);
 		});
 	}
