@@ -43,7 +43,7 @@ module.exports = function(data, opts) {
 	var partialName = function (filename, base) {
 		var name = filename.substr(0, filename.lastIndexOf('.'));
 		name = name.replace(base, '');
-		return name.substring(name.charAt(0) === '_' ? 1 : 0);
+		return name.substring(name.charAt(0) === '_' ? 1 : 0).replace('\\', '/');
 	};
 
 	var registerPartial = function (filename, base) {
